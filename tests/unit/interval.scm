@@ -1,4 +1,4 @@
-(use-modules (test) (murmur interval) (srfi srfi-1))
+(use-modules (test) (murmur interval))
 (test "canonical intervals"
   (check-equal '((1 . 9)) (spans-normalize '((4 . 9) (1 . 3) (3 . 4) (5 . 5))))
   (check-equal '((0 . 2) (4 . 5) (8 . 10))

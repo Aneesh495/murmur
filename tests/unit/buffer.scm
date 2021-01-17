@@ -1,0 +1,18 @@
+(use-modules (test) (murmur buffer))
+(test "planar copy and mix"
+  (let* ((a (make-audio 8000 2 5)) (b (make-audio 8000 2 10)))
+    (audio-map! a (lambda (x c i) (+ c (/ i 10))))
+    (audio-mix! b a 3 0.5)
+    (check-near 0.7 (audio-ref b 1 7) 1e-12)
+    (check-near 0.0 (audio-ref b 1 8) 0)
+    (let ((copy (audio-copy a)))
+      (audio-clear! a 0 5)
+      (check-near 1.4 (audio-ref copy 1 4) 1e-12)
+      (check-near 0 (audio-peak a) 0))
+    (check-error 'bounds (lambda () (audio-slice b 5 11)))
+    (check-error 'format (lambda () (audio-mix! b (make-audio 44100 2 1) 0 1)))))
+(test "empty buffers and budgets"
+  (check-equal 0.0 (audio-rms (make-audio 8000 1 0)))
+  (parameterize ((max-buffer-bytes 16))
+    (check-error 'budget (lambda () (make-audio 8000 2 2))))
+  (check-error 'channels (lambda () (make-audio 8000 0 2))))
