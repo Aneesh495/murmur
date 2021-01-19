@@ -1,0 +1,21 @@
+(use-modules (test) (murmur binary) (rnrs bytevectors) (ice-9 binary-ports))
+(test "little endian boundaries"
+  (let ((b (make-bytevector 12 255)))
+    (put-u16le! b 1 #x1234)
+    (put-u32le! b 4 #x87654321)
+    (check-equal #x1234 (u16le b 1))
+    (check-equal #x87654321 (u32le b 4))
+    (check-equal -1 (s24le b 9))
+    (check-equal #x1234ff (s24le b 0))
+    (check-error 'truncated (lambda () (u32le b 10)))
+    (check-error 'truncated (lambda () (bytes-slice b 5 4)))))
+(test "fourcc and concatenation"
+  (let ((b (make-bytevector 4)))
+    (fourcc! b 0 "RIFF")
+    (check-equal "RIFF" (fourcc b 0))
+    (check-equal "52494646" (bytes->hex b))
+    (check-equal 8 (bytevector-length (bytes-append b b)))))
+(test "exact reads"
+  (let ((p (open-bytevector-input-port #vu8(1 2))))
+    (check-equal #vu8(1 2) (read-exact p 2))
+    (check-error 'truncated (lambda () (read-exact p 1)))))
