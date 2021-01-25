@@ -1,0 +1,27 @@
+(use-modules (test) (fixtures) (murmur wave scan) (murmur wave decode)
+             (murmur buffer) (rnrs bytevectors))
+(test "integer PCM extrema"
+  (for-each
+   (lambda (entry)
+     (with-bytes
+      (fixture-wave (riff-chunk "fmt " (fixture-format 1 (car entry)))
+                    (riff-chunk "data" (cadr entry)))
+      (lambda (path)
+        (let ((a (read-wave path)))
+          (check-near -1 (audio-ref a 0 0) 0)
+          (check-near 0 (audio-ref a 0 1) 0)
+          (check (< 0.99 (audio-ref a 0 2) 1))))))
+   (list (list 8 #vu8(0 128 255))
+         (list 16 #vu8(0 128 0 0 255 127))
+         (list 24 #vu8(0 0 128 0 0 0 255 255 127))
+         (list 32 #vu8(0 0 0 128 0 0 0 0 255 255 255 127)))))
+(test "floating point decode rejects nonfinite samples"
+  (let ((data (make-bytevector 8)))
+    (bytevector-ieee-single-set! data 0 1.25 (endianness little))
+    (bytevector-ieee-single-set! data 4 +nan.0 (endianness little))
+    (with-bytes (fixture-wave (riff-chunk "fmt " (fixture-format 3 32))
+                              (riff-chunk "data" data))
+      (lambda (path)
+        (let ((w (scan-wave path)))
+          (check-near 1.25 (audio-ref (read-wave-region path w 0 1) 0 0) 0)
+          (check-error 'sample (lambda () (read-wave path))))))))
