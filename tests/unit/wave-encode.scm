@@ -1,0 +1,28 @@
+(use-modules (test) (fixtures) (murmur wave encode) (murmur wave decode)
+             (murmur wave scan) (murmur buffer) (murmur binary) (rnrs bytevectors))
+(test "PCM round trips across formats and channel counts"
+  (for-each
+   (lambda (format)
+     (for-each
+      (lambda (channels)
+        (let ((a (make-audio 44100 channels 17)))
+          (audio-map! a (lambda (x c i) (* 0.8 (sin (+ c i)))))
+          (with-bytes (encode-wave a #:bits (car format) #:format (cadr format))
+            (lambda (path)
+              (let ((b (read-wave path)))
+                (check-equal 17 (audio-frames b))
+                (check-equal channels (audio-channels b))
+                (do ((c 0 (+ c 1))) ((= c channels))
+                  (do ((i 0 (+ i 1))) ((= i 17))
+                    (check-near (audio-ref a c i) (audio-ref b c i)
+                                (if (= 3 (cadr format)) 1e-7 (/ 1.0 (expt 2 (- (car format) 1))))))))))))
+      '(1 2 6)))
+   '((8 1) (16 1) (24 1) (32 1) (32 3) (64 3))))
+(test "saturation and dither indexing"
+  (let ((a (make-audio 8000 1 4)))
+    (audio-map! a (lambda (x c i) (list-ref '(-2 -1 1 2) i)))
+    (check-equal #vu8(0 128 0 128 255 127 255 127) (encode-pcm a))
+    (audio-clear! a 0 4)
+    (check-equal (encode-pcm a #:dither 42)
+      (bytes-append (encode-pcm (audio-slice a 0 2) #:dither 42)
+                    (encode-pcm (audio-slice a 2 4) #:dither 42 #:start-frame 2)))))
