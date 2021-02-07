@@ -1,0 +1,11 @@
+(use-modules (test) (murmur schema))
+(test "strict field schemas"
+  (check-equal 3 (field-required (fields '((a 3)) '(a)) 'a))
+  (check-equal '((1) (2)) (field-values (fields '((a 1) (a 2)) '(a) '(a)) 'a))
+  (check-error 'schema (lambda () (fields '((oops 3)) '(a))))
+  (check-error 'schema (lambda () (fields '((a 1) (a 2)) '(a))))
+  (check-error 'schema (lambda () (field-required '() 'a)))
+  (check-error 'schema (lambda () (field-value '((a 1 2)) 'a)))
+  (check-error 'schema (lambda () (field-number '((a -1)) 'a 0 5)))
+  (check (label? "Interview A"))
+  (check (not (label? "bad\nlabel"))))
