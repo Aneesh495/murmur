@@ -1,0 +1,28 @@
+(use-modules (test) (fixtures) (murmur redact) (murmur project model)
+             (murmur wave scan) (murmur buffer) (murmur wave encode))
+(test "source-coordinate masks merge guards"
+  (with-bytes (encode-wave (make-audio 8000 1 800))
+    (lambda (path)
+      (let* ((info (scan-wave path))
+             (r (lambda (a b mode) (make-redaction 'a a b mode 1/1000 -18 1000)))
+             (m (compile-masks (list (r 1/100 2/100 'mute) (r 2/100 3/100 'mute)) info)))
+        (check-equal 1 (vector-length m))
+        (check-equal 72 (mask-start (vector-ref m 0)))
+        (check-equal 248 (mask-end (vector-ref m 0)))
+        (check (not (mask-at m 248)))
+        (check-error 'redaction
+          (lambda () (compile-masks (list (r 1/100 3/100 'mute) (r 2/100 4/100 'tone)) info)))))))
+(test "replacement noninterference"
+  (for-each
+   (lambda (mode)
+     (let ((a (make-audio 8000 2 800)) (b (make-audio 8000 2 800)))
+       (audio-map! a (lambda (x c i) (* 0.3 (sin i))))
+       (audio-map! b (lambda (x c i) (if (<= 80 i 239) 0.9 (* 0.3 (sin i)))))
+       (with-bytes (encode-wave a)
+         (lambda (path)
+           (let ((m (compile-masks (list (make-redaction 'x 1/100 3/100 mode 0 -18 1000)) (scan-wave path))))
+             (redact-buffer! a m 7 0) (redact-buffer! b m 7 0)
+             (do ((c 0 (+ c 1))) ((= c 2))
+               (do ((i 0 (+ i 1))) ((= i 800))
+                 (check-near (audio-ref a c i) (audio-ref b c i) 0))))))))
+   '(mute tone noise)))

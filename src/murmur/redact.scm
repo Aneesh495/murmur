@@ -1,0 +1,73 @@
+;;; Redaction replacements have no dependency on the removed sample values.
+;;; Envelopes operate entirely inside the forbidden region, never crossfading
+;;; original audio back into it. Source coordinates survive clip duplication.
+(define-module (murmur redact)
+  #:use-module (murmur error)
+  #:use-module (murmur buffer)
+  #:use-module (murmur clock)
+  #:use-module (murmur random)
+  #:use-module (murmur project model)
+  #:use-module (murmur wave scan)
+  #:use-module (srfi srfi-9)
+  #:use-module (srfi srfi-13)
+  #:use-module (srfi srfi-1)
+  #:export (compile-masks mask? mask-start mask-end mask-mode mask-level mask-hz
+            mask-at replacement-sample redact-buffer! source-noise-seed))
+(define-record-type <mask>
+  (%mask start end mode level hz) mask?
+  (start mask-start) (end mask-end) (mode mask-mode) (level mask-level) (hz mask-hz))
+(define (same-replacement? a b)
+  (and (eq? (mask-mode a) (mask-mode b)) (= (mask-level a) (mask-level b))
+       (= (mask-hz a) (mask-hz b))))
+(define (compile-masks redactions info)
+  (let* ((rate (wave-rate info)) (frames (wave-frames info))
+         (masks
+          (map (lambda (r)
+                 (ensure (<= (ceiling-frame (redaction-to r) rate) frames)
+                         'redaction "redaction extends past the source")
+                 (when (eq? (redaction-mode r) 'tone)
+                   (ensure (< (redaction-frequency r) (/ rate 2))
+                           'redaction "replacement tone reaches Nyquist"))
+                 (%mask (max 0 (floor-frame (max 0 (- (redaction-from r) (redaction-guard r))) rate))
+                        (min frames (ceiling-frame (+ (redaction-to r) (redaction-guard r)) rate))
+                        (redaction-mode r) (redaction-level r) (redaction-frequency r))) redactions)))
+    (let loop ((rest (sort masks (lambda (a b) (< (mask-start a) (mask-start b))))) (out '()))
+      (cond
+       ((null? rest) (list->vector (reverse out)))
+       ((and (pair? out) (<= (mask-start (car rest)) (mask-end (car out)))
+             (same-replacement? (car rest) (car out)))
+        (let ((a (car out)) (b (car rest)))
+          (loop (cdr rest) (cons (%mask (mask-start a) (max (mask-end a) (mask-end b))
+                                        (mask-mode a) (mask-level a) (mask-hz a)) (cdr out)))))
+       ((and (pair? out) (< (mask-start (car rest)) (mask-end (car out))))
+        (fail 'redaction "overlapping redactions have different replacements"))
+       (else (loop (cdr rest) (cons (car rest) out)))))))
+
+(define (mask-at masks frame)
+  ;; Binary search remains cheap even when an edit file contains many markers.
+  (let loop ((lo 0) (hi (vector-length masks)))
+    (if (>= lo hi) #f
+        (let* ((mid (quotient (+ lo hi) 2)) (m (vector-ref masks mid)))
+          (cond ((< frame (mask-start m)) (loop lo mid))
+                ((>= frame (mask-end m)) (loop (+ mid 1) hi))
+                (else m))))))
+(define (source-noise-seed seed id)
+  (string-fold (lambda (c acc) (mix32 (+ acc (char->integer c))))
+               seed (symbol->string id)))
+(define (replacement-sample mask rate seed channel frame)
+  (let* ((offset (- frame (mask-start mask)))
+         (length (- (mask-end mask) (mask-start mask)))
+         (ramp (max 1 (min (quotient length 2) (round (* rate 0.005)))))
+         (edge (min 1.0 (/ offset ramp) (/ (- length 1 offset) ramp)))
+         (window (* 0.5 (- 1 (cos (* 3.141592653589793 edge)))))
+         (amplitude (expt 10.0 (/ (mask-level mask) 20.0))))
+    (* amplitude window
+       (case (mask-mode mask)
+         ((mute) 0.0)
+         ((tone) (sin (* 6.283185307179586 (/ (* frame (mask-hz mask)) rate))))
+         ((noise) (white-at seed channel frame))))))
+(define (redact-buffer! audio masks seed start-frame)
+  (audio-map! audio
+    (lambda (sample channel i)
+      (let* ((frame (+ start-frame i)) (m (mask-at masks frame)))
+        (if m (replacement-sample m (audio-rate audio) seed channel frame) sample)))))
