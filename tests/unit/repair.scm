@@ -1,0 +1,15 @@
+(use-modules (test) (murmur dsp repair) (murmur buffer) (murmur random))
+(test "spectral subtraction reduces stationary noise"
+  (let ((a (make-audio 8000 1 4000)))
+    (audio-map! a (lambda (x c i) (* 0.1 (white-at 7 c i))))
+    (let ((b (spectral-denoise a 0 1600 #:size 256 #:strength 1.5)))
+      (check (audio-finite? b))
+      (check (< (audio-rms (audio-slice b 2000 4000)) (* 0.7 (audio-rms (audio-slice a 2000 4000))))))))
+(test "isolated click repair preserves smooth signals"
+  (let ((a (make-audio 8000 1 1000)))
+    (audio-map! a (lambda (x c i) (* 0.1 (sin (* i 0.03)))))
+    (let ((b (repair-clicks a)))
+      (do ((i 0 (+ i 1))) ((= i 1000)) (check-near (audio-ref a 0 i) (audio-ref b 0 i) 0)))
+    (let ((expected (/ (+ (audio-ref a 0 499) (audio-ref a 0 501)) 2)))
+      (audio-set! a 0 500 1)
+      (check-near expected (audio-ref (repair-clicks a) 0 500) 0))))
