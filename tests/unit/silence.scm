@@ -1,0 +1,11 @@
+(use-modules (test) (murmur silence) (murmur buffer))
+(test "silence windows cross blocks and preserve boundary padding"
+  (let* ((a (make-audio 8000 2 8000)) (whole (make-silence-detector 8000 2))
+         (split (make-silence-detector 8000 2)))
+    (audio-map! a (lambda (x c i) (if (and (= c 1) (>= i 4800)) 0.1 0)))
+    (silence-add! whole a)
+    (do ((i 0 (+ i 137))) ((>= i 8000))
+      (silence-add! split (audio-slice a i (min 8000 (+ i 137)))))
+    (check-equal '((400 . 4400)) (silence-finish whole))
+    (check-equal '((400 . 4400)) (silence-finish split))
+    (check-error 'silence (lambda () (silence-finish split)))))
