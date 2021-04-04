@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+MURMUR_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if ! command -v "${GUILE:-guile}" >/dev/null 2>&1; then
+    echo 'murmur needs Guile 3. Install with: brew install guile (macOS), or apt install guile-3.0 (Debian/Ubuntu).' >&2
+    exit 127
+fi
+export GUILE_AUTO_COMPILE=0
+export GUILE_LOAD_COMPILED_PATH="$MURMUR_ROOT/.cache/compiled${GUILE_LOAD_COMPILED_PATH:+:$GUILE_LOAD_COMPILED_PATH}"
+exec "${GUILE:-guile}" --no-auto-compile -L "$MURMUR_ROOT/src" -s "$MURMUR_ROOT/scripts/main.scm" "$@"
