@@ -9,7 +9,7 @@
   #:export (parse-project read-project))
 
 (define (named values kind)
-  (ensure (and (pair? values) (identifier? (car values))) 'schema "expected an identifier" kind)
+  (ensure (and (pair? values) (edit-id? (car values))) 'schema "expected an identifier" kind)
   (car values))
 (define (parse-source values)
   (let* ((id (named values 'source)) (f (fields (cdr values) '(path sha256)))
@@ -40,7 +40,7 @@
          (gain (field-number f 'gain-db -96 24 0))
          (pan (field-number f 'pan -1 1 0))
          (fi (field-time f 'fade-in 0)) (fo (field-time f 'fade-out 0)))
-    (ensure (identifier? source) 'schema "invalid source identifier")
+    (ensure (edit-id? source) 'schema "invalid source identifier")
     (ensure (< from to) 'schema "clip must have positive duration" id)
     (ensure (<= (+ fi fo) (- to from)) 'schema "clip fades overlap" id)
     (make-clip id source from to at gain pan fi fo)))

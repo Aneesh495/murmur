@@ -1,9 +1,20 @@
 GUILE ?= guile
 RUN = GUILE_AUTO_COMPILE=0 $(GUILE) --no-auto-compile -L src -L tests
+.DEFAULT_GOAL := all
 
-.PHONY: test check
+.PHONY: all build test check demo clean
+all: build
+
+build:
+	$(RUN) scripts/build.scm
 
 test:
 	$(RUN) tests/run.scm
 
-check: test
+check: build test
+
+demo: build
+	bin/murmur demo build/demo
+
+clean:
+	rm -rf .cache/compiled

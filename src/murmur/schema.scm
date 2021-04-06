@@ -5,7 +5,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-13)
   #:export (fields field-value field-values field-required field-number
-            field-time identifier? label? path-value? enum-value))
+            field-time edit-id? label? path-value? enum-value))
 
 (define* (fields items allowed #:optional (repeat '()))
   (ensure (list? items) 'schema "expected a field list")
@@ -33,7 +33,7 @@
     v))
 (define* (field-time fs key #:optional (default #f))
   ((module-ref (resolve-interface '(murmur clock)) 'parse-time) (field-value fs key default)))
-(define (identifier? v)
+(define (edit-id? v)
   (and (symbol? v) (<= 1 (string-length (symbol->string v)) 64)))
 (define (label? v)
   (and (string? v) (<= (string-length v) 200)

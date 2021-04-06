@@ -1,0 +1,20 @@
+;;; Compile every module, including CLI paths not imported by a particular test.
+(use-modules (system base compile) (ice-9 ftw) (srfi srfi-1))
+(define (mkdir-p path)
+  (unless (file-exists? path)
+    (unless (string=? path (dirname path)) (mkdir-p (dirname path)))
+    (mkdir path)))
+(define (sources directory)
+  (append-map
+   (lambda (name)
+     (let ((path (string-append directory "/" name)))
+       (cond ((eq? 'directory (stat:type (stat path))) (sources path))
+             ((string-suffix? ".scm" name) (list path)) (else '()))))
+   (scandir directory (lambda (n) (not (member n '("." "..")))))))
+(for-each
+ (lambda (source)
+   (let ((target (string-append ".cache/compiled/" (substring source 4 (- (string-length source) 4)) ".go")))
+     (mkdir-p (dirname target))
+     (compile-file source #:output-file target #:opts '(#:warnings (unbound-variable arity-mismatch)))
+     (format #t "compiled ~a~%" source)))
+ (sort (sources "src/murmur") string<?))

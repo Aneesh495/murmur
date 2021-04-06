@@ -14,7 +14,7 @@
   #:use-module (srfi srfi-13)
   #:export (parse-labels labels->patch))
 (define (parse-labels text source mode)
-  (ensure (identifier? source) 'labels "invalid source identifier")
+  (ensure (edit-id? source) 'labels "invalid source identifier")
   (enum-value mode '(mute tone noise))
   (let ((lines (string-split text #\newline)))
     (ensure (<= (length lines) 4096) 'budget "too many label lines")
