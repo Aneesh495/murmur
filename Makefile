@@ -14,7 +14,8 @@ test:
 check: build test
 
 demo: build
-	bin/murmur demo build/demo
+	mkdir -p build
+	@if [ -d build/demo ]; then bin/murmur verify build/demo/review; else bin/murmur demo build/demo; fi
 
 clean:
 	rm -rf .cache/compiled
