@@ -16,6 +16,6 @@
   (let ((data (json->text (object (cons 'plan (plan->json plan)) (cons 'planSha256 (plan-digest plan))
                                  (cons 'sources (source-identities plan)) (cons 'analysis analysis)))))
     (write-text (string-append stage "/review.html")
-      (string-append (asset "header.html") "<style>" (asset "review.css") "</style></head><body>"
+      (string-append "<!doctype html><html lang=\"en\"><head>" (asset "header.html") "<style>" (asset "review.css") "</style></head><body>"
                      (asset "body.html") "<script id=review-data type=application/json>" data
                      "</script><script>" (asset "review.js") "</script></body></html>"))))
