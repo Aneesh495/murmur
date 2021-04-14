@@ -15,6 +15,7 @@
   #:use-module (murmur project model)
   #:use-module (murmur effects)
   #:use-module (srfi srfi-1)
+  #:use-module (ice-9 format)
   #:export (main))
 (define usage
   "murmur 0.1.0 / offline recording repair and source redaction
