@@ -18,4 +18,4 @@
     (write-text (string-append stage "/review.html")
       (string-append "<!doctype html><html lang=\"en\"><head>" (asset "header.html") "<style>" (asset "review.css") "</style></head><body>"
                      (asset "body.html") "<script id=review-data type=application/json>" data
-                     "</script><script>" (asset "review.js") "</script></body></html>"))))
+                     "</script><script>" (asset "review-core.js") "</script><script>" (asset "review.js") "</script></body></html>"))))

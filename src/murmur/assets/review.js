@@ -42,18 +42,10 @@
   const clampView = () => {
     viewStart = Math.max(0, Math.min(duration - viewLength(), viewStart));
   };
-  const selectionClips = () => {
-    if (!selection) return [];
-    const lo = Math.floor(selection[0] * plan.rate),
-      hi = Math.ceil(selection[1] * plan.rate);
-    return plan.clips
-      .map((c) => ({
-        c,
-        lo: Math.max(lo, c.at),
-        hi: Math.min(hi, c.at + c.frames),
-      }))
-      .filter((x) => x.lo < x.hi);
-  };
+  const selectionClips = () =>
+    selection
+      ? MurmurCore.sourceIntervals(plan, selection[0], selection[1])
+      : [];
   const updateSelection = () => {
     $("selection").textContent = selection
       ? `${stamp(selection[0])} / ${stamp(selection[1])}`
@@ -151,7 +143,7 @@
   };
   const update = () => {
     const t = audio.currentTime || 0,
-      frame = Math.min(plan.frames - 1, Math.floor(t * plan.rate));
+      frame = MurmurCore.frameAt(t, plan.rate, plan.frames);
     $("clock").textContent = stamp(t);
     $("frame").textContent = `FRAME ${Math.max(0, frame).toLocaleString()}`;
     const active = plan.clips.filter(
@@ -376,18 +368,10 @@
   });
   $("patch").addEventListener("click", () => {
     const mode = $("mode").value,
-      patches = selectionClips().map(({ c, lo, hi }) => {
-        const s = source(c.source),
-          a = Math.max(
-            c.sourceStart,
-            Math.floor(c.sourceStart + ((lo - c.at) * s.rate) / plan.rate),
-          ),
-          b = Math.min(
-            c.sourceEnd,
-            Math.ceil(c.sourceStart + ((hi - c.at) * s.rate) / plan.rate),
-          );
-        return `  (redact ${c.source} (from ${a}/${s.rate}) (to ${b}/${s.rate}) (mode ${mode}))`;
-      });
+      patches = selectionClips().map(
+        (interval) =>
+          `  (redact ${interval.source} (from ${interval.start}/${interval.rate}) (to ${interval.end}/${interval.rate}) (mode ${mode}))`,
+      );
     const hashes = data.sources
       .map((s) => `  (source-sha256 ${s.id} "${s.sha256}")`)
       .join("\n");
