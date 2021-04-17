@@ -34,5 +34,5 @@
          (edits (parse-labels text source mode)))
     (ensure (pair? edits) 'labels "no redaction intervals in labels")
     `(murmur-patch (version 1) (base-plan ,(plan-digest plan))
-                  ,@(map (lambda (s) `(source-sha256 ,(bound-id s) ,(bound-digest s))) (plan-sources plan))
+                  ,@(map (lambda (s) `(source-sanitized-sha256 ,(bound-id s) ,(bound-sanitized-digest s))) (plan-sources plan))
                   ,@edits)))

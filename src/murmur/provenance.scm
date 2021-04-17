@@ -47,7 +47,7 @@
                                                    (cons 'label (cdr m)))) (project-markers p))))))
 (define (plan-digest plan) (sha256-text (json->text (plan->json plan))))
 (define (source-identities plan)
-  (map (lambda (s) (object (cons 'id (bound-id s)) (cons 'sha256 (bound-digest s)))) (plan-sources plan)))
+  (map (lambda (s) (object (cons 'id (bound-id s)) (cons 'sanitizedSha256 (bound-sanitized-digest s)))) (plan-sources plan)))
 (define (explain-frame plan frame)
   (ensure (exact-integer-in? frame 0 (- (plan-frames plan) 1)) 'bounds "frame outside rendered timeline")
   (let ((rate (project-rate (plan-project plan))))

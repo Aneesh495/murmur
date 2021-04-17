@@ -13,7 +13,7 @@
                                        (clip a (source x) (to 1/10))))
         (let* ((plan (compile-project (read-project doc) doc)) (s (car (plan-sources plan)))
                (form `(murmur-patch (version 1) (base-plan ,(plan-digest plan))
-                                   (source-sha256 x ,(bound-digest s))
+                                   (source-sanitized-sha256 x ,(bound-sanitized-digest s))
                                    (redact x (from 1/100) (to 2/100)))))
           (write-text patch (data->text form))
           (apply-source-patch doc patch out)

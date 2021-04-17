@@ -28,7 +28,7 @@
                           (cons 'planSha256 (plan-digest plan))
                           (cons 'sources (source-identities plan))
                           (cons 'files (map (lambda (f) (object (cons 'name (car f)) (cons 'sha256 (cdr f)))) files))
-                          (cons 'scope "integrity and source identity; no signature or semantic authenticity"))))
+                          (cons 'scope "sanitized-source identity and artifact integrity; no signature"))))
     (write-text (string-append stage "/receipt.json") (json->text receipt))
     (let ((files (append files (list (cons "receipt.json" (sha256-file (string-append stage "/receipt.json"))))))
           (project (plan-project plan)))

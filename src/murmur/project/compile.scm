@@ -5,22 +5,23 @@
   #:use-module (murmur clock)
   #:use-module (murmur paths)
   #:use-module (murmur hash)
+  #:use-module (murmur source-hash)
   #:use-module (murmur redact)
   #:use-module (murmur wave scan)
   #:use-module (murmur project model)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-9)
   #:export (compile-project plan? plan-project plan-sources plan-clips plan-frames
-            bound-source? bound-id bound-path bound-info bound-masks bound-digest bound-seed
+            bound-source? bound-id bound-path bound-info bound-masks bound-digest bound-sanitized-digest bound-seed
             compiled-clip? compiled-edit compiled-source compiled-start compiled-end
             compiled-at compiled-frames compiled-fade-in compiled-fade-out
             assert-sources-unchanged max-source-bytes max-render-frames))
 (define max-source-bytes (make-parameter (* 2 1024 1024 1024)))
 (define max-render-frames (make-parameter 200000000))
 (define-record-type <bound-source>
-  (%bound-source id path info masks digest seed) bound-source?
+  (%bound-source id path info masks digest sanitized seed) bound-source?
   (id bound-id) (path bound-path) (info bound-info) (masks bound-masks)
-  (digest bound-digest) (seed bound-seed))
+  (digest bound-digest) (sanitized bound-sanitized-digest) (seed bound-seed))
 (define-record-type <compiled-clip>
   (%compiled-clip edit source start end at frames fade-in fade-out) compiled-clip?
   (edit compiled-edit) (source compiled-source) (start compiled-start) (end compiled-end)
@@ -43,8 +44,10 @@
                                           (project-redactions project))))
                  (when (source-digest s)
                    (ensure (string=? digest (source-digest s)) 'source "pinned source digest mismatch" (source-id s)))
-                 (%bound-source (source-id s) path info (compile-masks redactions info) digest
-                                (source-noise-seed (project-seed project) (source-id s)))))
+                 (let* ((masks (compile-masks redactions info))
+                        (seed (source-noise-seed (project-seed project) (source-id s)))
+                        (sanitized (sanitized-source-digest path info masks seed)))
+                   (%bound-source (source-id s) path info masks digest sanitized seed))))
              (project-sources project) paths))
            (rate (project-rate project))
            (clips

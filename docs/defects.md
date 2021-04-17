@@ -26,3 +26,17 @@ Browser verification of the 2.550-second marker at 24000 Hz displayed frame
 before `floor`. Displayed media frames now round to nearest, consistent with the
 edit clock. The observed browser failure is retained as the `frameAt(2.55, 24000,
 184800) == 61200` regression. Source selection boundaries still expand outwards.
+
+## R004: raw source fingerprints escaped into public review artifacts
+
+The independent whole-bundle regression changed only forbidden input samples.
+Audio, edit maps, and measurements were identical, but `review.html`,
+`receipt.json`, and `manifest.mur` changed because they contained raw input
+fingerprints. This violated the intended publication boundary and could support
+small-domain guesses about removed content.
+
+Public source identities now hash a domain-separated canonical representation
+of sanitized native samples. Raw byte digests remain local for pinning and
+concurrent-change checks. Patches bind to sanitized identities plus the semantic
+plan. The regression compares every byte of every publication artifact, with no
+excluded fields or normalized-away failures.

@@ -373,7 +373,7 @@
           `  (redact ${interval.source} (from ${interval.start}/${interval.rate}) (to ${interval.end}/${interval.rate}) (mode ${mode}))`,
       );
     const hashes = data.sources
-      .map((s) => `  (source-sha256 ${s.id} "${s.sha256}")`)
+      .map((s) => `  (source-sanitized-sha256 ${s.id} "${s.sanitizedSha256}")`)
       .join("\n");
     const text = `(murmur-patch (version 1)\n  (base-plan "${data.planSha256}")\n${hashes}\n${patches.join("\n")}\n)\n`;
     const url = URL.createObjectURL(
