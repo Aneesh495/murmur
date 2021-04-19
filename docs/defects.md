@@ -40,3 +40,17 @@ of sanitized native samples. Raw byte digests remain local for pinning and
 concurrent-change checks. Patches bind to sanitized identities plus the semantic
 plan. The regression compares every byte of every publication artifact, with no
 excluded fields or normalized-away failures.
+
+## R005: guard expansion at the one-day timestamp limit
+
+A source ending at 86400 seconds could not redact its final sample with a guard.
+The internal expanded endpoint was incorrectly revalidated as a user timestamp.
+Expansion now uses the already validated exact clock directly, then clamps to
+source frames. The regression uses a small 1 Hz WAV to exercise the full day
+without allocating a day of conventional-rate audio.
+
+## R006: malformed empty manifest entry
+
+`(file)` reached `car` before its shape was checked, producing an internal error.
+Manifest entry shape now precedes all key extraction. The empty-entry regression
+fails with a structured bundle diagnostic.

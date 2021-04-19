@@ -29,7 +29,7 @@
                    (ensure (< (redaction-frequency r) (/ rate 2))
                            'redaction "replacement tone reaches Nyquist"))
                  (%mask (max 0 (floor-frame (max 0 (- (redaction-from r) (redaction-guard r))) rate))
-                        (min frames (ceiling-frame (+ (redaction-to r) (redaction-guard r)) rate))
+                        (min frames (ceiling (* (+ (redaction-to r) (redaction-guard r)) rate)))
                         (redaction-mode r) (redaction-level r) (redaction-frequency r))) redactions)))
     (let loop ((rest (sort masks (lambda (a b) (< (mask-start a) (mask-start b))))) (out '()))
       (cond
