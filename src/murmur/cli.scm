@@ -21,7 +21,7 @@
   "murmur 0.1.0 / offline recording repair and source redaction
 
   murmur init INPUT.wav EDIT.mur
-  murmur render EDIT.mur NEW_BUNDLE [--block-size N] [--bits 16|24|32]
+  murmur render EDIT.mur NEW_BUNDLE [--block-size N] [--bits 16|24|32|64]
                                   [--float] [--no-dither]
   murmur inspect INPUT.wav
   murmur analyze INPUT.wav
@@ -47,10 +47,10 @@ Use an explicit limit effect to control peaks. Paths are relative to EDIT.mur.
     (compile-effects (project-effects p) (project-rate p) (plan-frames plan)) plan))
 (define (render-command args)
   (ensure (>= (length args) 2) 'usage "render requires a project and a new bundle directory")
-  (let loop ((rest (drop args 2)) (block-size 4096) (bits 16) (format 1) (dither #t) (seen '()))
+  (let loop ((rest (drop args 2)) (block-size 4096) (bits #f) (format 1) (dither #t) (seen '()))
     (if (null? rest)
         (begin
-          (render-project (car args) (cadr args) #:block-size block-size #:bits bits #:sample-format format #:dither dither)
+          (render-project (car args) (cadr args) #:block-size block-size #:bits (or bits (if (= format 3) 32 16)) #:sample-format format #:dither dither)
           (display (json->text (verify-bundle (cadr args)))))
         (let ((key (car rest)))
           (ensure (not (member key seen)) 'usage "duplicate render option" key)
@@ -60,7 +60,7 @@ Use an explicit limit effect to control peaks. Paths are relative to EDIT.mur.
             (let ((v (integer-argument (cadr rest))))
               (loop (cddr rest) (if (string=? key "--block-size") v block-size)
                     (if (string=? key "--bits") v bits) format dither (cons key seen))))
-           ((string=? key "--float") (loop (cdr rest) block-size (if (= bits 16) 32 bits) 3 dither (cons key seen)))
+           ((string=? key "--float") (loop (cdr rest) block-size bits 3 dither (cons key seen)))
            ((string=? key "--no-dither") (loop (cdr rest) block-size bits format #f (cons key seen)))
            (else (fail 'usage "unknown render option" key)))))))
 (define (dispatch command args)
