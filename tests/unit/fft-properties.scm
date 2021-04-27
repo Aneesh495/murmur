@@ -1,0 +1,20 @@
+(use-modules (test) (murmur dsp fft) (srfi srfi-4))
+(test "FFT phase and energy at production window sizes"
+  (for-each
+   (lambda (n)
+     (let ((input (make-f64vector n 0.0)))
+       (f64vector-set! input 7 0.5)
+       (call-with-values
+           (lambda () (fft-real input))
+         (lambda (real imag)
+           (let ((energy 0.0))
+             (do ((k 0 (+ k 1))) ((= k n))
+               (let ((angle (* -6.283185307179586 (/ (* 7 k) n))))
+                 (check-near (* 0.5 (cos angle)) (f64vector-ref real k) 1e-12)
+                 (check-near (* 0.5 (sin angle)) (f64vector-ref imag k) 1e-12)
+                 (set! energy (+ energy (expt (f64vector-ref real k) 2) (expt (f64vector-ref imag k) 2)))))
+             (check-near 0.25 (/ energy n) 1e-12))
+           (fft-execute! (make-fft-plan n) real imag #:inverse? #t)
+           (do ((i 0 (+ i 1))) ((= i n))
+             (check-near (if (= i 7) 0.5 0.0) (f64vector-ref real i) 1e-12))))))
+   '(64 128 256 512 1024 2048)))
