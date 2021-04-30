@@ -595,3 +595,40 @@ footer {
     scroll-behavior: auto;
   }
 }
+
+.selection-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 23px;
+  border-top: 1px solid #ffffff13;
+  background: #122219;
+  color: #a2b5a7;
+}
+.selection-fields label {
+  font:
+    9px ui-monospace,
+    monospace;
+  letter-spacing: 1px;
+}
+.selection-fields input {
+  width: 85px;
+  margin-left: 8px;
+  padding: 5px;
+  background: #20382b;
+  border: 1px solid #48604d;
+  border-radius: 3px;
+  color: #e5ebdf;
+  font:
+    11px ui-monospace,
+    monospace;
+}
+.selection-fields button {
+  border-color: #48604d;
+  font-size: 10px;
+  padding: 6px 9px;
+}
+.selection-fields span {
+  font-size: 10px;
+}

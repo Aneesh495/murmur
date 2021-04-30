@@ -46,11 +46,37 @@
     selection
       ? MurmurCore.sourceIntervals(plan, selection[0], selection[1])
       : [];
+  $("selection-start").max = String(duration);
+  $("selection-end").max = String(duration);
+  $("set-selection").addEventListener("click", () => {
+    const start = Number($("selection-start").value),
+      end = Number($("selection-end").value);
+    if (
+      !Number.isFinite(start) ||
+      !Number.isFinite(end) ||
+      start < 0 ||
+      end > duration ||
+      end - start < 1 / plan.rate
+    ) {
+      $("selection-status").textContent =
+        "Enter a positive range within the recording.";
+      return;
+    }
+    selection = [start, end];
+    $("selection-status").textContent =
+      "Selection ready. Download a source patch below.";
+    updateSelection();
+    draw();
+  });
   const updateSelection = () => {
     $("selection").textContent = selection
       ? `${stamp(selection[0])} / ${stamp(selection[1])}`
       : "No selection";
     $("patch").disabled = selectionClips().length === 0;
+    if (selection) {
+      $("selection-start").value = selection[0].toFixed(6);
+      $("selection-end").value = selection[1].toFixed(6);
+    }
     if (!selection) {
       looping = false;
       $("loop").setAttribute("aria-pressed", "false");
@@ -348,12 +374,11 @@
   });
   document.addEventListener("keydown", (e) => {
     if (
-      ["INPUT", "SELECT", "TEXTAREA", "BUTTON", "A"].includes(
-        document.activeElement.tagName,
-      )
+      ["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)
     )
       return;
     if (e.code === "Space") {
+      if (["BUTTON", "A"].includes(document.activeElement.tagName)) return;
       e.preventDefault();
       toggle();
     }
