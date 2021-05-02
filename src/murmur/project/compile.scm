@@ -6,22 +6,23 @@
   #:use-module (murmur paths)
   #:use-module (murmur hash)
   #:use-module (murmur source-hash)
+  #:use-module (murmur fingerprint)
   #:use-module (murmur redact)
   #:use-module (murmur wave scan)
   #:use-module (murmur project model)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-9)
   #:export (compile-project plan? plan-project plan-sources plan-clips plan-frames
-            bound-source? bound-id bound-path bound-info bound-masks bound-digest bound-sanitized-digest bound-seed
+            bound-source? bound-id bound-path bound-info bound-masks bound-digest bound-sanitized-digest bound-seed bound-fingerprint
             compiled-clip? compiled-edit compiled-source compiled-start compiled-end
             compiled-at compiled-frames compiled-fade-in compiled-fade-out
             assert-sources-unchanged max-source-bytes max-render-frames))
 (define max-source-bytes (make-parameter (* 2 1024 1024 1024)))
 (define max-render-frames (make-parameter 200000000))
 (define-record-type <bound-source>
-  (%bound-source id path info masks digest sanitized seed) bound-source?
+  (%bound-source id path info masks digest sanitized seed fingerprint) bound-source?
   (id bound-id) (path bound-path) (info bound-info) (masks bound-masks)
-  (digest bound-digest) (sanitized bound-sanitized-digest) (seed bound-seed))
+  (digest bound-digest) (sanitized bound-sanitized-digest) (seed bound-seed) (fingerprint bound-fingerprint))
 (define-record-type <compiled-clip>
   (%compiled-clip edit source start end at frames fade-in fade-out) compiled-clip?
   (edit compiled-edit) (source compiled-source) (start compiled-start) (end compiled-end)
@@ -39,7 +40,7 @@
     (let* ((sources
             (map
              (lambda (s path)
-               (let* ((info (scan-wave path)) (digest (sha256-file path))
+               (let* ((fingerprint (file-fingerprint path)) (info (scan-wave path)) (digest (sha256-file path))
                       (redactions (filter (lambda (r) (eq? (redaction-source r) (source-id s)))
                                           (project-redactions project))))
                  (when (source-digest s)
@@ -47,7 +48,9 @@
                  (let* ((masks (compile-masks redactions info))
                         (seed (source-noise-seed (project-seed project) (source-id s)))
                         (sanitized (sanitized-source-digest path info masks seed)))
-                   (%bound-source (source-id s) path info masks digest sanitized seed))))
+                   (ensure (equal? fingerprint (file-fingerprint path))
+                           'source "source changed while binding the edit plan" (source-id s))
+                   (%bound-source (source-id s) path info masks digest sanitized seed fingerprint))))
              (project-sources project) paths))
            (rate (project-rate project))
            (clips
@@ -76,6 +79,10 @@
                                    'marker "marker is past the output end")) (project-markers project))
       (%plan project sources clips frames))))
 (define (assert-sources-unchanged plan)
-  (for-each (lambda (s)
-              (ensure (string=? (bound-digest s) (sha256-file (bound-path s)))
-                      'source "source changed during rendering" (bound-id s))) (plan-sources plan)))
+  (for-each
+   (lambda (s)
+     (ensure (and (equal? (bound-fingerprint s) (file-fingerprint (bound-path s)))
+                  (string=? (bound-digest s) (sha256-file (bound-path s)))
+                  (equal? (bound-fingerprint s) (file-fingerprint (bound-path s))))
+             'source "source changed during rendering" (bound-id s)))
+   (plan-sources plan)))

@@ -1,5 +1,5 @@
 ;;; One platform boundary, for no-replace publication. Audio algorithms remain
-;;; ordinary Scheme. No native build or dynamically downloaded library is used.
+;;; ordinary Scheme. The separate timestamp adapter has a small fixed C ABI.
 (define-module (murmur native)
   #:use-module (murmur error)
   #:use-module (system foreign)

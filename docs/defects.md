@@ -54,3 +54,17 @@ without allocating a day of conventional-rate audio.
 `(file)` reached `car` before its shape was checked, producing an internal error.
 Manifest entry shape now precedes all key extraction. The empty-entry regression
 fails with a structured bundle diagnostic.
+
+## R007: changed-and-restored input escaped the final hash check
+
+A regression modified a bound source, restored identical bytes, reset its mtime,
+and observed that the final raw hash still passed. Bytes read during the
+intermediate revision could have produced a mixed render. Binding now captures
+inode, device, size, mtime, and ctime with nanosecond fields. The reader checks
+that fingerprint around every page read; binding and final validation check it
+around hashing too. This detects ordinary concurrent edits, including reverted
+ones. It is not snapshot isolation against a privileged hostile filesystem.
+
+Guile 3.0.11 on the tested macOS host returned zero nanosecond fields. The first
+Scheme-only fingerprint still failed this regression. A 28-line C adapter now
+uses the platform's actual `fstat` timestamps behind a fixed seven-word ABI.

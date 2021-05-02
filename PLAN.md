@@ -43,7 +43,7 @@ area here. Murmur shares no source with those projects.
 ## Acceptance requirements
 
 - Scheme owns the audio algorithms, edit compiler, renderer, CLI, and reporting.
-- A fresh clone needs Guile 3 and Make. Python 3 is used for independent checks.
+- A fresh clone needs Guile 3, Make, and a C11 compiler. Python 3 is used for independent checks.
 - No datasets, credentials, network services, proprietary SDKs, or package
   registries are required by the normal workflow.
 - Redaction tests change only forbidden input samples and compare every output
