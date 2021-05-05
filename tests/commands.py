@@ -6,7 +6,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from acceptance import run, write_pcm
+from acceptance import ROOT, run, write_pcm
 
 with tempfile.TemporaryDirectory(prefix="murmur-commands-") as temp:
     base = Path(temp)
@@ -57,4 +57,21 @@ with tempfile.TemporaryDirectory(prefix="murmur-commands-") as temp:
         assert raw.encode() not in f.read_bytes()
 print(
     "commands: init, errors, option ordering, patch application, and destination ownership passed"
+)
+
+(ROOT / "build" / "commands.json").write_text(
+    json.dumps(
+        {
+            "status": "passed",
+            "checks": [
+                "init",
+                "errors",
+                "option ordering",
+                "patch application",
+                "destination ownership",
+            ],
+        },
+        indent=2,
+    )
+    + "\n"
 )

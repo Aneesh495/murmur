@@ -4,7 +4,7 @@ SHARED_FLAGS := $(if $(filter Darwin,$(shell uname -s)),-dynamiclib,-shared -fPI
 RUN = GUILE_AUTO_COMPILE=0 $(GUILE) --no-auto-compile -L src -L tests
 .DEFAULT_GOAL := all
 
-.PHONY: all build native test check verify demo clean
+.PHONY: all build native test check verify accounting demo clean
 all: build
 
 native: .cache/native/fingerprint.so
@@ -21,13 +21,20 @@ test: native
 
 check: build test
 
-verify: check
+verify:
+	python3 scripts/evidence.py begin
+	$(MAKE) check
 	python3 tests/native_abi.py
 	python3 tests/acceptance.py
 	python3 tests/commands.py
 	python3 tests/malformed.py
 	python3 tests/signals.py
 	node tests/review.test.cjs
+	python3 scripts/evidence.py finish
+	python3 scripts/accounting.py
+
+accounting:
+	python3 scripts/accounting.py
 
 demo: build
 	mkdir -p build

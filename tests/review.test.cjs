@@ -39,3 +39,11 @@ assert.deepEqual(sourceIntervals(plan, 0, 2), [
 assert.deepEqual(sourceIntervals(plan, 3, 4), []);
 assert.throws(() => sourceIntervals(plan, 1, 1), RangeError);
 console.log("review arithmetic: 8 checks passed");
+
+require("node:fs").mkdirSync(require("node:path").join(__dirname, "../build"), {
+  recursive: true,
+});
+require("node:fs").writeFileSync(
+  require("node:path").join(__dirname, "../build/review-tests.json"),
+  JSON.stringify({ status: "passed", checks: 8 }) + "\n",
+);

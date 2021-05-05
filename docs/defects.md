@@ -66,5 +66,5 @@ around hashing too. This detects ordinary concurrent edits, including reverted
 ones. It is not snapshot isolation against a privileged hostile filesystem.
 
 Guile 3.0.11 on the tested macOS host returned zero nanosecond fields. The first
-Scheme-only fingerprint still failed this regression. A 28-line C adapter now
+Scheme-only fingerprint still failed this regression. A small C adapter now
 uses the platform's actual `fstat` timestamps behind a fixed seven-word ABI.

@@ -39,6 +39,10 @@
     (unless (eq? code observed) (error "wrong error" code observed))))
 
 (define (finish-tests)
+  (unless (file-exists? "build") (mkdir "build"))
+  (call-with-output-file "build/scheme-tests.json"
+    (lambda (p) (format p "{\"cases\":~a,\"assertions\":~a,\"failures\":~a}~%"
+                        cases assertions (length failures))))
   (format #t "~a cases, ~a assertions, ~a failures~%"
           cases assertions (length failures))
   (exit (if (null? failures) 0 1)))
