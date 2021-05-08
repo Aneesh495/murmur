@@ -76,4 +76,4 @@ area here. Murmur shares no source with those projects.
 
 - [GNU Guile manual](https://www.gnu.org/software/guile/manual/)
 - [RIFF WAVE format notes and original specification links](https://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html)
-- [Web Audio specification](https://www.w3.org/TR/webaudio-1.0/)
+- [HTML media elements](https://html.spec.whatwg.org/multipage/media.html)
