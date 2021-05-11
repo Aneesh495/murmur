@@ -1,0 +1,13 @@
+; The first half-second is a synthetic stationary-noise profile.
+(murmur
+  (version 1) (rate 22050) (channels 1) (seed 1977)
+  (source field (path "../build/demo/field.wav"))
+  (redact field (from 2.75) (to 3.4) (mode noise) (guard 0.02) (level-db -32))
+  (clip whole (source field) (from 0) (to 8) (fade-in 0.01) (fade-out 0.02))
+  (effect highpass (hz 70))
+  (effect notch (hz 60) (q 10))
+  (effect declick (threshold 0.18))
+  (effect denoise (profile-from 0) (profile-to 0.5) (size 512)
+          (strength 1.2) (floor-db -18))
+  (effect normalize (peak-db -3))
+  (marker (at 0) (label "Noise profile")))

@@ -1,0 +1,14 @@
+; Repeated source selections share one source-wide redaction policy.
+(murmur
+  (version 1) (rate 16000) (channels 2) (seed 17)
+  (source field (path "../build/demo/field.wav"))
+  (source bed (path "../build/demo/bed.wav"))
+  (redact field (from 2.75) (to 3.4) (mode tone) (guard 0.02) (hz 880) (level-db -24))
+  (clip left (source field) (from 0.2) (to 4.2) (at 0) (pan -0.3)
+        (fade-in 0.1) (fade-out 0.3))
+  (clip repeated (source field) (from 2) (to 5) (at 2) (pan 0.3) (gain-db -6)
+        (fade-in 0.2) (fade-out 0.2))
+  (clip bed (source bed) (from 0) (to 5) (at 0) (gain-db -6)
+        (fade-in 0.2) (fade-out 0.5))
+  (effect limit (ceiling-db -2))
+  (marker (at 2) (label "Repeated source enters")))
