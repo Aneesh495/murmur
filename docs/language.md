@@ -111,8 +111,9 @@ Overlapping clips sum before master effects.
 
 ## Effects
 
-All optional values below use the shown defaults. Parameters are checked before
-render staging. Frequencies must also satisfy the current output Nyquist limit.
+The forms below show example settings. Filter defaults are 80 Hz,
+Q 0.7071067811865476, and zero dB gain. Other forms show their defaults.
+Parameters are checked before render staging. Frequencies must also satisfy the current output Nyquist limit.
 
 ```scheme
 (effect gain (db 0))
@@ -134,7 +135,7 @@ render staging. Frequencies must also satisfy the current output Nyquist limit.
 (effect remove-dc)
 ```
 
-The seven filter types plus gain, compressor, gate, and limiter stream. `declick`,
+The six filter types plus gain, compressor, gate, and limiter stream. `declick`,
 `denoise`, `normalize`, and `remove-dc` request full-buffer execution. Effect order
 is literal: a noise profile is measured after earlier effects in the chain.
 

@@ -18,12 +18,13 @@ REPORTS = [
     "malformed.json",
     "signals.json",
     "review-tests.json",
+    "examples.json",
 ]
 
 
 def source_manifest():
     files = []
-    for directory in ["src", "native", "tests", "scripts", ".github"]:
+    for directory in ["src", "native", "tests", "scripts", ".github", "examples"]:
         files.extend(
             p
             for p in (ROOT / directory).rglob("*")

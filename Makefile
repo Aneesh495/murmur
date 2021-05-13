@@ -30,6 +30,7 @@ verify:
 	python3 tests/malformed.py
 	python3 tests/signals.py
 	node tests/review.test.cjs
+	python3 tests/examples.py
 	python3 scripts/evidence.py finish
 	python3 scripts/accounting.py
 
