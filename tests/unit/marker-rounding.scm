@@ -1,0 +1,11 @@
+(use-modules (test) (fixtures) (murmur buffer) (murmur wave encode)
+             (murmur project parse) (murmur project compile) (murmur provenance) (murmur json))
+(test "marker half-frame ties follow the edit clock"
+  (with-bytes (encode-wave (make-audio 8000 1 80))
+    (lambda (path)
+      (let* ((p (parse-project `(murmur (version 1) (rate 8000)
+                            (source field (path ,(canonicalize-path path)))
+                            (clip a (source field) (to 1/100))
+                            (marker (at 1/16000) (label "Half frame")))))
+             (plan (compile-project p path)))
+        (check (string-contains (json->text (plan->json plan)) "\"markers\":[{\"frame\":1,"))))))

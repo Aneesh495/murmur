@@ -8,7 +8,9 @@ region applies to every clip that references that source.
 
 Take two supported source recordings with the same rate, channels, frame count,
 and samples outside the normalized masks. Let their forbidden samples differ
-arbitrarily within the finite PCM domain. Render the same semantic project on
+arbitrarily within the finite PCM domain. Both inputs must pass local binding
+checks; an unchanged raw-file pin intentionally rejects any changed original.
+Render the same semantic project on
 the same platform and toolchain.
 
 Every publication file must be identical:

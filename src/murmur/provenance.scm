@@ -2,6 +2,7 @@
 ;;; influence across time, so this map does not claim to invert a final sample.
 (define-module (murmur provenance)
   #:use-module (murmur error)
+  #:use-module (murmur clock)
   #:use-module (murmur json)
   #:use-module (murmur hash)
   #:use-module (murmur project model)
@@ -43,7 +44,7 @@
                                (cons 'fadeIn (compiled-fade-in c)) (cons 'fadeOut (compiled-fade-out c))
                                (cons 'redactions (clip-redactions c rate))))) (plan-clips plan)))
             (cons 'effects (map (lambda (spec) (format #f "~s" spec)) (project-effects p)))
-            (cons 'markers (map (lambda (m) (object (cons 'frame (round (* rate (car m))))
+            (cons 'markers (map (lambda (m) (object (cons 'frame (seconds->frame (car m) rate))
                                                    (cons 'label (cdr m)))) (project-markers p))))))
 (define (plan-digest plan) (sha256-text (json->text (plan->json plan))))
 (define (source-identities plan)

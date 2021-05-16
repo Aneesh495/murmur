@@ -68,3 +68,10 @@ ones. It is not snapshot isolation against a privileged hostile filesystem.
 Guile 3.0.11 on the tested macOS host returned zero nanosecond fields. The first
 Scheme-only fingerprint still failed this regression. A small C adapter now
 uses the platform's actual `fstat` timestamps behind a fixed seven-word ABI.
+
+## R008: marker ties used a different rounding rule
+
+A marker at half of the first 8000 Hz frame appeared at frame zero in the edit
+map, while the edit clock specifies ties toward the future. The serializer had
+used generic tie-to-even `round`. It now uses `seconds->frame`, and the retained
+half-frame regression requires frame one in the published marker map.
