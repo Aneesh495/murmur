@@ -19,6 +19,7 @@ REPORTS = [
     "signals.json",
     "review-tests.json",
     "examples.json",
+    "interrupt.json",
 ]
 
 

@@ -75,3 +75,12 @@ A marker at half of the first 8000 Hz frame appeared at frame zero in the edit
 map, while the edit clock specifies ties toward the future. The serializer had
 used generic tie-to-even `round`. It now uses `seconds->frame`, and the retained
 half-frame regression requires frame one in the published marker map.
+
+## R009: SIGINT left the private staging directory
+
+A real-process regression waited until the output stage existed, then sent
+SIGINT. The process terminated with the normal signal status but did not unwind
+Scheme cleanup, leaving the owned stage behind. The executable entry point now
+turns SIGINT and SIGTERM into caught cancellation exceptions. Dynamic-wind closes
+ports and deletes the stage before exits 130 or 143. The regression checks the
+exit status, absence of both destination and stage, and unchanged source bytes.

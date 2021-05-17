@@ -95,6 +95,9 @@ Use an explicit limit effect to control peaks. Paths are relative to EDIT.mur.
       (if (null? (cdr argv)) (display usage) (dispatch (cadr argv) (cddr argv))) 0)
     (lambda (key . args)
       (cond
+       ((eq? key 'murmur-cancel)
+        (format (current-error-port) "murmur: interrupted by signal ~a~%" (car args))
+        (+ 128 (car args)))
        ((eq? key 'murmur)
         (format (current-error-port) "murmur: ~a: ~a~{ ~s~}~%" (car args) (cadr args) (caddr args))
         (if (eq? (car args) 'usage) 2 1))
