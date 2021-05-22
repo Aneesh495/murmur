@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Run the real demo and every shipped edit document in a fresh private tree."""
 
-from pathlib import Path
 import json
 import shutil
 import tempfile
+from pathlib import Path
+
 from acceptance import ROOT, run
 
 checked = []

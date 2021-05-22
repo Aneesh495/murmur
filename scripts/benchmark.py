@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Measure the actual publication command, including startup, hashes, and review."""
 
-from pathlib import Path
 import argparse
 import json
 import math
@@ -13,6 +12,9 @@ import subprocess
 import tempfile
 import time
 import wave
+from pathlib import Path
+
+from evidence import source_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -20,6 +22,7 @@ parser.add_argument("--runs", type=int, default=3)
 args = parser.parse_args()
 if not 1 <= args.runs <= 10:
     raise SystemExit("runs must be 1 to 10")
+source_before = source_manifest()
 results = []
 with tempfile.TemporaryDirectory(prefix="murmur-benchmark-") as temp:
     base = Path(temp)
@@ -92,7 +95,10 @@ with tempfile.TemporaryDirectory(prefix="murmur-benchmark-") as temp:
             }
         )
 peak = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+if source_manifest() != source_before:
+    raise SystemExit("source changed while benchmarking")
 report = {
+    "sourceSha256": source_before["sha256"],
     "host": platform.platform(),
     "runs": args.runs,
     "scope": "fresh CLI processes; includes source identity, render, encoded analysis, HTML, hashes, and publication; warm filesystem cache",

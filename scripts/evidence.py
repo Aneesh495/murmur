@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Bind acceptance results to an unchanged source and test manifest."""
 
-from pathlib import Path
 import hashlib
 import json
 import platform
 import subprocess
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
@@ -20,6 +20,8 @@ REPORTS = [
     "review-tests.json",
     "examples.json",
     "interrupt.json",
+    "structure.json",
+    "review-html.json",
 ]
 
 
@@ -29,7 +31,7 @@ def source_manifest():
         files.extend(
             p
             for p in (ROOT / directory).rglob("*")
-            if p.is_file() and "__pycache__" not in p.parts
+            if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".md"
         )
     files += [ROOT / "Makefile", ROOT / ".gitignore"]
     entries = {
@@ -46,6 +48,8 @@ def version(command):
 
 
 def main():
+    if not __debug__:
+        raise SystemExit("verification requires Python assertions enabled")
     BUILD.mkdir(exist_ok=True)
     if len(sys.argv) != 2 or sys.argv[1] not in ["begin", "finish"]:
         raise SystemExit("usage: evidence.py begin|finish")

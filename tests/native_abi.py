@@ -5,9 +5,9 @@ import ctypes
 import errno
 import json
 import os
-from pathlib import Path
 import struct
 import tempfile
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 library = ctypes.CDLL(str(ROOT / ".cache/native/fingerprint.so"))

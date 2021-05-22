@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Physical source accounting, with generated data and build products excluded."""
 
-from pathlib import Path
 import json
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GROUPS = {

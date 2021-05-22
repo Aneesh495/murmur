@@ -32,6 +32,8 @@ verify:
 	node tests/review.test.cjs
 	python3 tests/examples.py
 	python3 tests/interrupt.py
+	python3 tests/review_html.py
+	python3 scripts/check_tree.py
 	python3 scripts/evidence.py finish
 	python3 scripts/accounting.py
 
