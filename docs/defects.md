@@ -84,3 +84,15 @@ Scheme cleanup, leaving the owned stage behind. The executable entry point now
 turns SIGINT and SIGTERM into caught cancellation exceptions. Dynamic-wind closes
 ports and deletes the stage before exits 130 or 143. The regression checks the
 exit status, absence of both destination and stage, and unchanged source bytes.
+
+## R010: manifest symlinks passed bundle verification
+
+The whole-command regression moved a valid manifest outside its bundle and
+replaced it with a symlink. Verification incorrectly succeeded even though the
+flat bundle contract requires regular files. The manifest now receives an lstat
+regular-file check before parsing, just like artifact entries receive before
+hashing. This also refuses a FIFO manifest before opening it.
+
+The source-reversion regression was also strengthened to restore mtime with its
+exact nanoseconds and assert that restoration. Its failure must therefore depend
+on the retained ctime/identity evidence, not a rounded mtime difference.

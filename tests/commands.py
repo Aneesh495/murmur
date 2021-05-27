@@ -22,6 +22,15 @@ with tempfile.TemporaryDirectory(prefix="murmur-commands-") as temp:
     run("explain", document, "200", ok=False)
     run("render", document, base / "normal")
     run("render", document, base / "normal", ok=False)
+    manifest = base / "normal/manifest.mur"
+    saved_manifest = base / "saved-manifest.mur"
+    manifest.rename(saved_manifest)
+    manifest.symlink_to(saved_manifest)
+    result = run("verify", base / "normal", ok=False)
+    assert "bundle" in result.stderr
+    manifest.unlink()
+    saved_manifest.rename(manifest)
+
     for name, options in [
         ("a", ["--float", "--bits", "16"]),
         ("b", ["--bits", "16", "--float"]),
