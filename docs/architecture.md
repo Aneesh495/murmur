@@ -118,7 +118,7 @@ flowchart LR
     RAW --> LOCAL[Local pin and concurrent-change checks]
     I --> DEC[Decode native samples]
     DEC --> MASK[Apply source masks]
-    MASK --> CAN[Canonical float64 sample stream]
+    MASK --> CAN[Zero masked positions; canonical samples and mask recipe]
     CAN --> SAFE[Sanitized source SHA-256]
     SAFE --> PUBLIC[Review, receipt, patch bindings]
     PLAN[Path-free semantic edit map] --> PH[Plan SHA-256]
@@ -127,7 +127,10 @@ flowchart LR
 
 Raw byte digests do not enter a publication bundle. A public source identity
 includes a versioned domain prefix, rate, channel count, frame count, and
-interleaved little-endian float64 samples after source redaction. Metadata chunks,
+interleaved little-endian float64 samples with masked positions set to zero,
+plus normalized replacement recipes and the noise seed when relevant. The
+identity does not hash generated tone/noise values, so platform transcendental
+rounding cannot change a patch binding. Metadata chunks,
 input sample width, and filenames are absent from that representation.
 
 A sanitized identity can still identify unmarked content. It is not encryption

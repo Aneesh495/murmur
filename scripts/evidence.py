@@ -13,6 +13,7 @@ BUILD = ROOT / "build"
 REPORTS = [
     "scheme-tests.json",
     "native-abi.json",
+    "identity.json",
     "acceptance.json",
     "commands.json",
     "malformed.json",

@@ -96,3 +96,13 @@ hashing. This also refuses a FIFO manifest before opening it.
 The source-reversion regression was also strengthened to restore mtime with its
 exact nanoseconds and assert that restoration. Its failure must therefore depend
 on the retained ctime/identity evidence, not a rounded mtime difference.
+
+## R011: public identities inherited replacement math-library rounding
+
+The first sanitized identity hashed generated tone/noise values as float64.
+Source patch bindings therefore depended on platform sin/cos low bits even when
+original samples and edit settings were the same. An independent Python digest
+regression exposed the mismatch with the intended portable canonical form.
+Masked positions now serialize as zero, while normalized mask settings and the
+relevant noise seed serialize separately. Actual rendered audio keeps its own
+artifact hash. No public identity needs transcendental DSP arithmetic.

@@ -25,6 +25,7 @@ verify:
 	python3 scripts/evidence.py begin
 	$(MAKE) check
 	python3 tests/native_abi.py
+	python3 tests/identity.py
 	python3 tests/acceptance.py
 	python3 tests/commands.py
 	python3 tests/malformed.py

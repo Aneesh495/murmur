@@ -1,6 +1,7 @@
 ;;; Public source identities hash the sanitized representation, not private input
-;;; bytes. Otherwise a forbidden change could alter the receipt or provide a
-;;; guessing oracle for a removed phrase. Raw file digests stay in local plans.
+;;; bytes. Masked positions become canonical zero; the replacement recipe is
+;;; separate, keeping identities independent of platform sin/cos results.
+;;; Raw file digests stay in local plans.
 (define-module (murmur source-hash)
   #:use-module (murmur hash)
   #:use-module (murmur binary)
@@ -12,7 +13,11 @@
   #:export (sanitized-source-digest))
 (define (sanitized-source-digest path info masks seed)
   (let* ((hash (make-sha256)) (channels (wave-channels info)) (frames (wave-frames info))
-         (prefix (format #f "MURMUR-SANITIZED-SOURCE-v1\n~a ~a ~a\n" (wave-rate info) channels frames)))
+         (recipes (map (lambda (m) (list (mask-start m) (mask-end m) (mask-mode m)
+                                        (mask-level m) (mask-hz m) (if (eq? (mask-mode m) 'noise) seed 0)))
+                       (vector->list masks)))
+         (prefix (format #f "MURMUR-SANITIZED-SOURCE-v1\n~a ~a ~a\n~s\n"
+                         (wave-rate info) channels frames recipes)))
     (sha256-update! hash (string->utf8 prefix))
     (call-with-input-file path
       (lambda (port)
@@ -21,10 +26,10 @@
           (let* ((count (min 4096 (- frames at)))
                  (audio (decode-pcm info (read-exact port (* count (wave-align info)))))
                  (canonical (make-bytevector (* count channels 8) 0)))
-            (redact-buffer! audio masks seed at)
             (do ((i 0 (+ i 1))) ((= i count))
-              (do ((c 0 (+ c 1))) ((= c channels))
-                (bytevector-ieee-double-set! canonical (* 8 (+ c (* i channels)))
-                                             (audio-ref audio c i) (endianness little))))
+              (unless (mask-at masks (+ at i))
+                (do ((c 0 (+ c 1))) ((= c channels))
+                  (bytevector-ieee-double-set! canonical (* 8 (+ c (* i channels)))
+                                               (audio-ref audio c i) (endianness little)))))
             (sha256-update! hash canonical)))) #:binary #t)
     (sha256-finish! hash)))

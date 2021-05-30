@@ -58,7 +58,9 @@ A source alias or marker can itself contain identifying text. Murmur does not
 claim to recognize sensitive labels or infer which unmarked phrase should have
 been removed. Review those values before sharing a bundle.
 
-The current public identity hashes the sanitized complete native source, including
+The current public identity hashes the complete native source with masked
+positions replaced by canonical zero, plus the normalized replacement recipe.
+It includes
 unmarked samples that a clip may not use. It discloses a fingerprint of that
 representation. It does not publish those unused samples, and forbidden sample
 changes cannot alter it. This is an integrity mechanism, not confidentiality for

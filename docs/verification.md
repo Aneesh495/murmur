@@ -26,6 +26,7 @@ navigation and publication rules but is outside the behavioral source digest.
 | Interval algebra | Union/intersection/subtraction against enumerated point sets |
 | WAV | Integer extrema, float/nonfinite handling, odd padding, unknown chunks, extensible headers, malformed lengths |
 | PCM publication | Python decodes PCM16, PCM24, and float32 independently and compares actual exported samples |
+| Canonical identity | Python derives a fixed digest from zeroed masked samples and the normalized recipe, independently of replacement sin/cos values |
 | Public integrity | Python `hashlib` checks every manifest and receipt artifact digest |
 | Sample redaction | Whole-output comparisons for every sample in both channels |
 | Whole-bundle redaction | Six pairs: three replacement modes through streaming and spectral chains; all public bytes compared |
@@ -140,7 +141,7 @@ Important generated files:
 - `source-manifest.json`: every behavioral source/test file and its SHA-256.
 - `scheme-tests.json`: case, assertion, and failure counts.
 - `acceptance.json`: byte-level privacy artifacts for all six pairs.
-- `malformed.json`, `signals.json`, `native-abi.json`: corpus and numeric results.
+- `malformed.json`, `signals.json`, `native-abi.json`, `identity.json`: corpus, numeric, and canonical identity results.
 - `commands.json`, `review-tests.json`, `review-html.json`: product boundaries.
 - `examples.json`, `interrupt.json`, `structure.json`: end-to-end and repository checks.
 - `verification.json`: host/toolchain context and report hashes after the final source comparison.
