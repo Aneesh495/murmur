@@ -10,15 +10,6 @@ contains the rendered recording, waveform, edit map, and a receipt.
 The useful question is simple: can I cut an interview, remove a private phrase,
 repair the recording, and inspect exactly what will leave my machine?
 
-## Portfolio survey
-
-The public repository inventory was refreshed on 2026-10-21. Existing projects
-cover compilers, storage, distributed execution, hardware, simulation, scientific
-computing, archives, and HTTP failure rehearsal. Source was inspected in Quartz
-(minimal mono WAV codec), Cairn (transactional restore), Argus (causal reasoning),
-and the documented surfaces of Cathode and Sluice. Audio editing is a new product
-area here. Murmur shares no source with those projects.
-
 ## Implementation sequence
 
 1. Foundation: typed errors, exact clocks, interval algebra, buffers, binary I/O,
@@ -38,7 +29,7 @@ area here. Murmur shares no source with those projects.
    whole-command tests, fresh-clone reproduction, and hosted CI.
 8. Documentation and publication: architecture diagrams, numerical contracts,
    command reference, developer guide, failure catalogue, measured limits,
-   source accounting, at least 55 meaningful checkpoint commits, GitHub topics.
+   source accounting, reproducible examples, and a documented release.
 
 ## Acceptance requirements
 
@@ -56,8 +47,8 @@ area here. Murmur shares no source with those projects.
 - Every discovered defect gets a failing regression before the repair.
 - Performance and supported formats are reported from actual runs. No claim of
   universal correctness or unmeasured production capacity.
-- Source size is measured by language and role. Generated fixtures and padding
-  never count as implementation.
+- Source size is measured by language and role. Generated fixtures and build products
+  are accounted for separately from implementation.
 
 ## Design decisions
 

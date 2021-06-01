@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """A public source identity must not depend on platform libm replacement values."""
 
-from pathlib import Path
 import hashlib
 import json
 import tempfile
+from pathlib import Path
+
 from acceptance import ROOT, run, write_pcm
 
 with tempfile.TemporaryDirectory(prefix="murmur-identity-") as temp:
