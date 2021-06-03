@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "build"
 REPORTS = [
     "scheme-tests.json",
+    "scheme-compiled-tests.json",
     "native-abi.json",
     "identity.json",
     "acceptance.json",
@@ -71,7 +72,7 @@ def main():
     for name in REPORTS:
         path = BUILD / name
         content = json.loads(path.read_text())
-        if name == "scheme-tests.json" and (
+        if name in ("scheme-tests.json", "scheme-compiled-tests.json") and (
             content["failures"] != 0 or content["cases"] == 0
         ):
             raise SystemExit("Scheme suite did not pass")

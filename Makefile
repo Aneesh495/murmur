@@ -4,7 +4,7 @@ SHARED_FLAGS := $(if $(filter Darwin,$(shell uname -s)),-dynamiclib,-shared -fPI
 RUN = GUILE_AUTO_COMPILE=0 $(GUILE) --no-auto-compile -L src -L tests
 .DEFAULT_GOAL := all
 
-.PHONY: all build native test check verify accounting bench demo clean
+.PHONY: all build native test compiled-test check verify accounting bench demo clean
 all: build
 
 native: .cache/native/fingerprint.so
@@ -19,11 +19,14 @@ build: native
 test: native
 	$(RUN) tests/run.scm
 
+compiled-test: build
+	GUILE_LOAD_COMPILED_PATH="$(CURDIR)/.cache/compiled" MURMUR_TEST_REPORT=build/scheme-compiled-tests.json $(RUN) tests/run.scm
+
 check: build test
 
 verify:
 	python3 scripts/evidence.py begin
-	$(MAKE) check
+	$(MAKE) check compiled-test
 	python3 tests/native_abi.py
 	python3 tests/identity.py
 	python3 tests/acceptance.py

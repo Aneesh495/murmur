@@ -2,12 +2,18 @@
 ;;; This is an audio noise generator, not a cryptographic random source.
 (define-module (murmur random)
   #:use-module (murmur error)
-  #:export (mix32 uniform-at tpdf-at white-at))
+  #:export (mul32 mix32 uniform-at tpdf-at white-at))
 (define (u32 x) (logand x #xffffffff))
+;;; Split products into 16-bit limbs. All intermediates remain below 2^34,
+;;; avoiding an older Guile compiler's signed conversion of a wide product.
+(define (mul32 a b)
+  (let ((al (logand a #xffff)) (ah (logand (ash a -16) #xffff))
+        (bl (logand b #xffff)) (bh (logand (ash b -16) #xffff)))
+    (u32 (+ (* al bl) (ash (logand (+ (* ah bl) (* al bh)) #xffff) 16)))))
 (define (mix32 x)
   (let* ((x (u32 x))
-         (x (u32 (* (logxor x (ash x -16)) #x7feb352d)))
-         (x (u32 (* (logxor x (ash x -15)) #x846ca68b))))
+         (x (u32 (mul32 (logxor x (ash x -16)) #x7feb352d)))
+         (x (u32 (mul32 (logxor x (ash x -15)) #x846ca68b))))
     (u32 (logxor x (ash x -16)))))
 (define (uniform-at seed channel frame lane)
   (ensure (and (exact-integer-in? seed 0 #xffffffff)

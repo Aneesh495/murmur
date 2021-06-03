@@ -106,3 +106,13 @@ regression exposed the mismatch with the intended portable canonical form.
 Masked positions now serialize as zero, while normalized mask settings and the
 relevant noise seed serialize separately. Actual rendered audio keeps its own
 artifact hash. No public identity needs transcendental DSP arithmetic.
+
+## R012: compiled Linux wide-product conversion
+
+The first Ubuntu 24.04 job passed the interpreted Scheme suite, then failed the
+compiled CLI at source binding with an unsigned conversion of a negative wide
+integer. The 32-bit mixer had multiplied full words before masking. It now uses
+16-bit limbs, keeping every intermediate below 2^34 while preserving the exact
+low 32 bits. Boundary products are checked against arbitrary-precision arithmetic.
+The full Scheme suite now runs in both interpreted and compiled modes, with
+separate reports, so compiled-only failures cannot hide behind interpreter tests.

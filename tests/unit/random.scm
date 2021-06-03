@@ -12,3 +12,10 @@
     (check (< 0.30 (/ energy 10000) 0.36)))
   (check (not (= (uniform-at 7 0 100 0) (uniform-at 7 1 100 0))))
   (check-error 'random (lambda () (white-at -1 0 1))))
+(test "word products agree with arbitrary-precision arithmetic"
+  (for-each
+   (lambda (a)
+     (for-each
+      (lambda (b) (check-equal (modulo (* a b) 4294967296) (mul32 a b)))
+      '(0 1 65535 65536 2147483648 4294967295)))
+   '(0 1 65535 65536 2147483648 4294967295)))

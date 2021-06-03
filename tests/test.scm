@@ -40,7 +40,7 @@
 
 (define (finish-tests)
   (unless (file-exists? "build") (mkdir "build"))
-  (call-with-output-file "build/scheme-tests.json"
+  (call-with-output-file (or (getenv "MURMUR_TEST_REPORT") "build/scheme-tests.json")
     (lambda (p) (format p "{\"cases\":~a,\"assertions\":~a,\"failures\":~a}~%"
                         cases assertions (length failures))))
   (format #t "~a cases, ~a assertions, ~a failures~%"
