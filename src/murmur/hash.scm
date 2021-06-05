@@ -26,7 +26,11 @@
   (%sha256 (vector #x6a09e667 #xbb67ae85 #x3c6ef372 #xa54ff53a
                    #x510e527f #x9b05688c #x1f83d9ab #x5be0cd19) 0 #vu8() #f))
 (define (u32 x) (logand x #xffffffff))
-(define (rotr x n) (u32 (logior (ash x (- n)) (ash x (- 32 n)))))
+;;; Mask the wrapping low bits before shifting. Every intermediate stays a
+;;; 32-bit word, including under compilers that unbox bitwise arithmetic.
+(define (rotr x n)
+  (logior (ash x (- n))
+          (ash (logand x (- (ash 1 n) 1)) (- 32 n))))
 (define (big0 x) (logxor (rotr x 2) (rotr x 13) (rotr x 22)))
 (define (big1 x) (logxor (rotr x 6) (rotr x 11) (rotr x 25)))
 (define (small0 x) (logxor (rotr x 7) (rotr x 18) (ash x -3)))

@@ -19,3 +19,14 @@
       (with-bytes (make-bytevector size 97)
         (lambda (path) (check-equal (sha256-bytes (make-bytevector size 97))
                                     (sha256-file path)))))))
+
+(test "word rotations keep high-bit inputs unsigned"
+  (let ((rotate (@@ (murmur hash) rotr)))
+    (for-each
+     (lambda (x)
+       (do ((n 1 (+ n 1))) ((= n 32))
+         (check-equal
+          (+ (quotient x (expt 2 n))
+             (* (modulo x (expt 2 n)) (expt 2 (- 32 n))))
+          (rotate x n))))
+     '(0 1 2147483647 2147483648 4294967294 4294967295))))

@@ -107,12 +107,16 @@ Masked positions now serialize as zero, while normalized mask settings and the
 relevant noise seed serialize separately. Actual rendered audio keeps its own
 artifact hash. No public identity needs transcendental DSP arithmetic.
 
-## R012: compiled Linux wide-product conversion
+## R012: compiled Linux wide-word conversion
 
 The first Ubuntu 24.04 job passed the interpreted Scheme suite, then failed the
 compiled CLI at source binding with an unsigned conversion of a negative wide
-integer. The 32-bit mixer had multiplied full words before masking. It now uses
-16-bit limbs, keeping every intermediate below 2^34 while preserving the exact
-low 32 bits. Boundary products are checked against arbitrary-precision arithmetic.
-The full Scheme suite now runs in both interpreted and compiled modes, with
-separate reports, so compiled-only failures cannot hide behind interpreter tests.
+integer. Splitting the noise mixer's products into 16-bit limbs was insufficient:
+the new compiled suite isolated failures in SHA-256, including known answers.
+Its rotations shifted whole words before discarding the unused high bits. They
+now mask the wrapping low bits first, keeping rotation intermediates within 32
+bits. Boundary rotations are checked against quotient/remainder arithmetic;
+noise products are checked against arbitrary-precision multiplication.
+
+The full Scheme suite runs in both interpreted and compiled modes, with separate
+reports, so compiled-only failures cannot hide behind interpreter tests.
