@@ -1,0 +1,9 @@
+{
+  "50Hz-passband-max-error": 9.467153607688183e-06,
+  "440Hz-passband-max-error": 8.106231689453125e-06,
+  "1000Hz-passband-max-error": 3.3714539718898706e-06,
+  "3000Hz-passband-max-error": 3.2842159271240234e-05,
+  "6000Hz-stopband-rms": 2.53256024120202e-06,
+  "9000Hz-stopband-rms": 1.711627105316723e-06,
+  "stationary-noise-snr-improvement-db": 6.4166644049618355
+}

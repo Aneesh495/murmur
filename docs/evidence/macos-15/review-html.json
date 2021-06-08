@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "checks": [
+    "document shape",
+    "script escaping",
+    "relative audio",
+    "offline resources"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "signals": [
+    "SIGINT",
+    "SIGTERM"
+  ],
+  "exitCodes": [
+    130,
+    143
+  ],
+  "stageCleaned": true
+}

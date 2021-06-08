@@ -1,0 +1,47 @@
+{
+  "scheme-production": {
+    "files": 43,
+    "physicalLines": 2564,
+    "nonblankLines": 2502
+  },
+  "scheme-tests": {
+    "files": 43,
+    "physicalLines": 811,
+    "nonblankLines": 802
+  },
+  "scheme-build": {
+    "files": 2,
+    "physicalLines": 26,
+    "nonblankLines": 26
+  },
+  "c-adapter": {
+    "files": 1,
+    "physicalLines": 31,
+    "nonblankLines": 30
+  },
+  "browser-js": {
+    "files": 3,
+    "physicalLines": 556,
+    "nonblankLines": 555
+  },
+  "browser-css": {
+    "files": 1,
+    "physicalLines": 634,
+    "nonblankLines": 633
+  },
+  "browser-html": {
+    "files": 2,
+    "physicalLines": 168,
+    "nonblankLines": 168
+  },
+  "python-verification": {
+    "files": 13,
+    "physicalLines": 1061,
+    "nonblankLines": 986
+  },
+  "documentation": {
+    "files": 12,
+    "physicalLines": 1630,
+    "nonblankLines": 1276
+  }
+}

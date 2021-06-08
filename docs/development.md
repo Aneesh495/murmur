@@ -44,7 +44,8 @@ select a different Guile executable. Make also accepts `CC=...`.
 ```sh
 make build       # native adapter and all Scheme modules
 make test        # native adapter plus Scheme unit/property/integration cases
-make check       # compile every module, then Scheme suite
+make check       # compile every module, then interpreted Scheme suite
+make compiled-test # repeat the Scheme suite against compiled modules
 make verify      # source-bound full acceptance battery
 make bench       # three complete-publication performance cases
 make accounting  # physical source counts by language and role

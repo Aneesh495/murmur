@@ -1,0 +1,48 @@
+{
+  "sourceSha256": "4d247cd1df7ce4ca02f07ec1585af4ec1e151448a7cce555ba4be007a2b77f26",
+  "host": "macOS-26.7.2-arm64-arm-64bit-Mach-O",
+  "runs": 3,
+  "scope": "fresh CLI processes; includes source identity, render, encoded analysis, HTML, hashes, and publication; warm filesystem cache",
+  "maximumChildRssBytes": 33751040,
+  "cases": [
+    {
+      "case": "native-stream",
+      "nativeRate": 8000,
+      "outputRate": 8000,
+      "frames": 16000,
+      "wallSeconds": [
+        0.2880772910430096,
+        0.28081475000362843,
+        0.28060483298031613
+      ],
+      "medianSeconds": 0.28081475000362843,
+      "framesPerSecond": 56977.0640601794
+    },
+    {
+      "case": "rational-resample",
+      "nativeRate": 44100,
+      "outputRate": 48000,
+      "frames": 96000,
+      "wallSeconds": [
+        1.6189887500368059,
+        1.643323040974792,
+        1.6633898339932784
+      ],
+      "medianSeconds": 1.643323040974792,
+      "framesPerSecond": 58418.21577761995
+    },
+    {
+      "case": "spectral-repair",
+      "nativeRate": 8000,
+      "outputRate": 8000,
+      "frames": 16000,
+      "wallSeconds": [
+        0.38738933397689834,
+        0.3938904170063324,
+        0.3902601670124568
+      ],
+      "medianSeconds": 0.3902601670124568,
+      "framesPerSecond": 40998.291274469964
+    }
+  ]
+}

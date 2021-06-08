@@ -93,6 +93,7 @@ published outputs. There is no external DSP library or codec subprocess.
 ## Use your own recording
 
 ```sh
+make
 bin/murmur init recording.wav edit.mur
 # Edit the source intervals and clip settings in edit.mur.
 bin/murmur render edit.mur build/review
@@ -119,8 +120,8 @@ See the [command reference](docs/commands.md),
 make verify
 ```
 
-Full verification additionally needs Python 3.10+ and Node 18+. It includes 70
-Scheme cases, independent PCM and measurement checks, six whole-bundle privacy
+Full verification additionally needs Python 3.10+ and Node 18+. It includes 72
+Scheme cases in both interpreted and compiled modes, independent PCM and measurement checks, six whole-bundle privacy
 pairs, negative controls, 303 malformed inputs, analytic signal checks, browser
 arithmetic and HTML checks, native ABI canaries, real-process cancellation, and
 the complete demo plus every example.
@@ -130,6 +131,9 @@ remain unchanged throughout the run. CI runs the battery on macOS and Linux and
 preserves the reports. [Verification details](docs/verification.md) and the
 [defect ledger](docs/defects.md) describe what failed during development and what
 the checks do and do not establish.
+
+[Recorded acceptance](docs/evidence/README.md) includes matching source manifests
+and raw results from a fresh clone and both hosted platforms.
 
 ## Scope
 

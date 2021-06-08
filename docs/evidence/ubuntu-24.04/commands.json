@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "checks": [
+    "init",
+    "errors",
+    "option ordering",
+    "patch application",
+    "destination ownership"
+  ]
+}

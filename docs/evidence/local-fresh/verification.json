@@ -1,0 +1,201 @@
+{
+  "status": "passed",
+  "sourceSha256": "4d247cd1df7ce4ca02f07ec1585af4ec1e151448a7cce555ba4be007a2b77f26",
+  "host": "macOS-26.7.2-arm64-arm-64bit-Mach-O",
+  "python": "3.14.2",
+  "guile": "guile (GNU Guile) 3.0.11",
+  "cc": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "node": "v24.21.0",
+  "reports": {
+    "scheme-tests.json": {
+      "sha256": "024e0080ceefde1d47766371dac5acc93a59dacadae0e2c112789879260af4bb",
+      "result": {
+        "cases": 72,
+        "assertions": 34840,
+        "failures": 0
+      }
+    },
+    "scheme-compiled-tests.json": {
+      "sha256": "024e0080ceefde1d47766371dac5acc93a59dacadae0e2c112789879260af4bb",
+      "result": {
+        "cases": 72,
+        "assertions": 34840,
+        "failures": 0
+      }
+    },
+    "native-abi.json": {
+      "sha256": "477e2f2d29906bd35a62a2b1cfd6645e2152c073e94b230964a60bb3e3aa9934",
+      "result": {
+        "status": "passed",
+        "checks": [
+          "timestamps",
+          "buffer canaries",
+          "changed file",
+          "bad fd",
+          "nonregular fd"
+        ]
+      }
+    },
+    "identity.json": {
+      "sha256": "fa087c8c4f8b907cb7116aafd74f4e070671eebc06450c63fcdb09368f49829e",
+      "result": {
+        "status": "passed",
+        "canonicalSha256": "a4a35fcb961a456799010725726fe648fcfe988482b1dedf572084901e92a5ad"
+      }
+    },
+    "acceptance.json": {
+      "sha256": "66c1d85b6f2fc13f7c707a6399dffc7e05d7732d0a4cf437352cd12c4a57998f",
+      "result": {
+        "privacy": {
+          "mute-stream": {
+            "analysis.json": "0b1896d2f03e84218b9405917f3da49a6b5737a60e8f4d846457b6f41d63ccd2",
+            "audio.wav": "1164000ddc1bac49ce5fcf176f9837d308cdfe3620f652116f81e4afcbfb1702",
+            "manifest.mur": "a994b58a9805910069a1a4fc33b3eda4dedd7e0605da2f808a6a17e55f4b19b3",
+            "plan.json": "21605c54626f2d68387225532f74ced6b2836f47a492937a87cf49f88fb0f1fb",
+            "receipt.json": "d13e291838dd33e48a4ee0e77f3ef2dcffb25a1dfb5bfc63318c203833d16903",
+            "review.html": "f827063161fdda3db83b63965468e77b9dbd679cea9c972126ba8b0630a08368"
+          },
+          "mute-spectral": {
+            "analysis.json": "6c1cdd8e4e10c44673baa5552c935118925c9bc13ac724673c3b3419c9389bae",
+            "audio.wav": "3285f5f89b30a6a40b7234c421b95af61174b744a896daeb10cb720cee1219af",
+            "manifest.mur": "624643a6c174e233a5bea00cb48d9cbc1a9214e4e805824f4b07c9a8dbce0979",
+            "plan.json": "7a2334dea09a992be70fe544f1dcc7e4055414dd2826f33ca70fbd2503ac2cca",
+            "receipt.json": "75eda6967abcdfe28e5637c3890b72660abf3ac4a30a30e266356b153ec58bca",
+            "review.html": "24d4cc503bf00cb26a5e0920c55606fc91c25f424aaa7dc277ef1cfd0c9a4a46"
+          },
+          "tone-stream": {
+            "analysis.json": "2e26c1bbaaccaab9ad4ec79729b0065c3aefd0cd06ab0a42454b9e5921b12e91",
+            "audio.wav": "d5a6bcda75d73c1f99d2d61fdf9294bab69502ae4b2bb2acea29d211f60a564c",
+            "manifest.mur": "2a00f2de4415c816ce9ef21061f8d00e39fef9cdcd21a7a77852c00d9b4ea8fb",
+            "plan.json": "dfe2e5729f3ce6a1829b0ff7964d19f827e37ca7f1ac6503a170812ef8a4c454",
+            "receipt.json": "b50604ae1f532f6fd388b632c0fd7ab47adf893b17929ea1583a740bf17fec76",
+            "review.html": "4825ced0fe04fda9e7e4d1b6fdc121ae9dafe91c03d5f898da22813c5370e0aa"
+          },
+          "tone-spectral": {
+            "analysis.json": "451ef35419f8bc6f86ddcc57563e42635acd2ef8346aa4f81cc8e39002f055e6",
+            "audio.wav": "1800df14587e9ed88370730ad37b9a12b35e62bb19bdb886e56cc16634b858b2",
+            "manifest.mur": "328ff6a8140c4d54af33e76e46f491c003f6b8c1627e826af313a2829d32765e",
+            "plan.json": "1e9a3a470cbd77d4d018dddadf6def5d7592b930b1f38a3934cf105b1b2c8731",
+            "receipt.json": "f641db963221474d6cdabab0ef0ed7296d817c8d3f4a9a3aa17b3fb32f1005b9",
+            "review.html": "4b9cd0754c9c339c819bde0937955dd581b3e2addf22cb7828f50080aef31057"
+          },
+          "noise-stream": {
+            "analysis.json": "fdcba3b310fb746f40af13408d20e6983df9d4fb19bd38cf2a83110c53ec1fe8",
+            "audio.wav": "82abaf77970733c97aa4b358eb05d78ef4450741fef5521e8ac435f2d05cef1d",
+            "manifest.mur": "4519ef3bb29fbf4ed1f8ac234231d85ae213c0b1369c3d2d87abc47de6121ed2",
+            "plan.json": "83c45188c226292db56eb43849c1a0c6ea5eaa29f21958b00a9ac1bac2a40e5f",
+            "receipt.json": "2b50bf88ea3cfc03d8fb2b66f8ddaac314294989ae60e7ea01d918099d7c9aa5",
+            "review.html": "3430e7c2b88dd146caa17db1c4eec36fb7dd2ad653fb1dc3f98d12f19bc9c9b4"
+          },
+          "noise-spectral": {
+            "analysis.json": "c7c0a1c95c4ba8bc60f973f60c0009e874e4b362259447956fd571710192d1d1",
+            "audio.wav": "c9edff0a570a0e57fbbc5a576fe947930f0289d6f190a0bc5bfe99cdfd663ed3",
+            "manifest.mur": "28585830de94c639c2bcc07cfd906247820d0a1baf21758228a4a3054bc8eab9",
+            "plan.json": "04afacc024740843bf72d1ab9161ba80ae5bdfd92f589cde6e72ec679ccfe277",
+            "receipt.json": "019e7c07aafd4e2ea147d345652cf4062e17198219db058e6ab5361c20845fe8",
+            "review.html": "64f0bac093f936c870246b0575d7ad4ba196464cea1b8c3476d0d52f1a204f80"
+          }
+        },
+        "codec": [
+          "pcm16",
+          "pcm24",
+          "float32"
+        ],
+        "negativeControls": [
+          "observable outside-region change",
+          "tamper rejection",
+          "unlisted-file rejection"
+        ]
+      }
+    },
+    "commands.json": {
+      "sha256": "68a9a9df8c5a6934aa6045efb6503376f1620f24b398f155c3f8d91f2d5f6f57",
+      "result": {
+        "status": "passed",
+        "checks": [
+          "init",
+          "errors",
+          "option ordering",
+          "patch application",
+          "destination ownership"
+        ]
+      }
+    },
+    "malformed.json": {
+      "sha256": "ceee4ffaafa5cb56b82d4162a94f3400204dabaf873e50f429c3932022f78834",
+      "result": {
+        "seed": 20261021,
+        "cases": {
+          "wave": 205,
+          "project": 91,
+          "manifest": 7
+        }
+      }
+    },
+    "signals.json": {
+      "sha256": "0d0578308fe75f7e8ad39760ab061aa2f9fad50e68849e9cb8e2c095b90f0456",
+      "result": {
+        "50Hz-passband-max-error": 9.467153607688183e-06,
+        "440Hz-passband-max-error": 8.106231689453125e-06,
+        "1000Hz-passband-max-error": 3.3714539718898706e-06,
+        "3000Hz-passband-max-error": 3.2842159271240234e-05,
+        "6000Hz-stopband-rms": 2.53256024120202e-06,
+        "9000Hz-stopband-rms": 1.711627105316723e-06,
+        "stationary-noise-snr-improvement-db": 6.4166644049618355
+      }
+    },
+    "review-tests.json": {
+      "sha256": "8b2e0b6bd91fa909175ffc87ac3031bdc53309ce6be1ec59ea065de00eba4edc",
+      "result": {
+        "status": "passed",
+        "checks": 8
+      }
+    },
+    "examples.json": {
+      "sha256": "9ebfa0f7de858203908ce30827d6cac5553d85378a9d64acd17944b0b79ff42b",
+      "result": {
+        "status": "passed",
+        "examples": [
+          "interview.mur",
+          "overlap.mur",
+          "restoration.mur"
+        ]
+      }
+    },
+    "interrupt.json": {
+      "sha256": "b4f6ad2354bf03d3a63492e80f89efbc211aaec42d7af27c1fb464c4105e0223",
+      "result": {
+        "status": "passed",
+        "signals": [
+          "SIGINT",
+          "SIGTERM"
+        ],
+        "exitCodes": [
+          130,
+          143
+        ],
+        "stageCleaned": true
+      }
+    },
+    "structure.json": {
+      "sha256": "0159a3028fb95ed0616cca46bc1c85a1ef0f732b25752c9229b789b235e4a784",
+      "result": {
+        "status": "passed",
+        "localLinks": 41,
+        "textFiles": 129
+      }
+    },
+    "review-html.json": {
+      "sha256": "b42b375f139f8fa2e0f1bb23e84b7cf1a2ee806c7b3d9d476e61ccf02e62bb45",
+      "result": {
+        "status": "passed",
+        "checks": [
+          "document shape",
+          "script escaping",
+          "relative audio",
+          "offline resources"
+        ]
+      }
+    }
+  }
+}

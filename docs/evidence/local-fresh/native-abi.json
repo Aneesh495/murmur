@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "checks": [
+    "timestamps",
+    "buffer canaries",
+    "changed file",
+    "bad fd",
+    "nonregular fd"
+  ]
+}

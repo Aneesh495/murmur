@@ -1,0 +1,62 @@
+{
+  "privacy": {
+    "mute-stream": {
+      "analysis.json": "0b1896d2f03e84218b9405917f3da49a6b5737a60e8f4d846457b6f41d63ccd2",
+      "audio.wav": "1164000ddc1bac49ce5fcf176f9837d308cdfe3620f652116f81e4afcbfb1702",
+      "manifest.mur": "a994b58a9805910069a1a4fc33b3eda4dedd7e0605da2f808a6a17e55f4b19b3",
+      "plan.json": "21605c54626f2d68387225532f74ced6b2836f47a492937a87cf49f88fb0f1fb",
+      "receipt.json": "d13e291838dd33e48a4ee0e77f3ef2dcffb25a1dfb5bfc63318c203833d16903",
+      "review.html": "f827063161fdda3db83b63965468e77b9dbd679cea9c972126ba8b0630a08368"
+    },
+    "mute-spectral": {
+      "analysis.json": "6c1cdd8e4e10c44673baa5552c935118925c9bc13ac724673c3b3419c9389bae",
+      "audio.wav": "3285f5f89b30a6a40b7234c421b95af61174b744a896daeb10cb720cee1219af",
+      "manifest.mur": "624643a6c174e233a5bea00cb48d9cbc1a9214e4e805824f4b07c9a8dbce0979",
+      "plan.json": "7a2334dea09a992be70fe544f1dcc7e4055414dd2826f33ca70fbd2503ac2cca",
+      "receipt.json": "75eda6967abcdfe28e5637c3890b72660abf3ac4a30a30e266356b153ec58bca",
+      "review.html": "24d4cc503bf00cb26a5e0920c55606fc91c25f424aaa7dc277ef1cfd0c9a4a46"
+    },
+    "tone-stream": {
+      "analysis.json": "2e26c1bbaaccaab9ad4ec79729b0065c3aefd0cd06ab0a42454b9e5921b12e91",
+      "audio.wav": "d5a6bcda75d73c1f99d2d61fdf9294bab69502ae4b2bb2acea29d211f60a564c",
+      "manifest.mur": "2a00f2de4415c816ce9ef21061f8d00e39fef9cdcd21a7a77852c00d9b4ea8fb",
+      "plan.json": "dfe2e5729f3ce6a1829b0ff7964d19f827e37ca7f1ac6503a170812ef8a4c454",
+      "receipt.json": "b50604ae1f532f6fd388b632c0fd7ab47adf893b17929ea1583a740bf17fec76",
+      "review.html": "4825ced0fe04fda9e7e4d1b6fdc121ae9dafe91c03d5f898da22813c5370e0aa"
+    },
+    "tone-spectral": {
+      "analysis.json": "451ef35419f8bc6f86ddcc57563e42635acd2ef8346aa4f81cc8e39002f055e6",
+      "audio.wav": "1800df14587e9ed88370730ad37b9a12b35e62bb19bdb886e56cc16634b858b2",
+      "manifest.mur": "328ff6a8140c4d54af33e76e46f491c003f6b8c1627e826af313a2829d32765e",
+      "plan.json": "1e9a3a470cbd77d4d018dddadf6def5d7592b930b1f38a3934cf105b1b2c8731",
+      "receipt.json": "f641db963221474d6cdabab0ef0ed7296d817c8d3f4a9a3aa17b3fb32f1005b9",
+      "review.html": "4b9cd0754c9c339c819bde0937955dd581b3e2addf22cb7828f50080aef31057"
+    },
+    "noise-stream": {
+      "analysis.json": "fdcba3b310fb746f40af13408d20e6983df9d4fb19bd38cf2a83110c53ec1fe8",
+      "audio.wav": "82abaf77970733c97aa4b358eb05d78ef4450741fef5521e8ac435f2d05cef1d",
+      "manifest.mur": "4519ef3bb29fbf4ed1f8ac234231d85ae213c0b1369c3d2d87abc47de6121ed2",
+      "plan.json": "83c45188c226292db56eb43849c1a0c6ea5eaa29f21958b00a9ac1bac2a40e5f",
+      "receipt.json": "2b50bf88ea3cfc03d8fb2b66f8ddaac314294989ae60e7ea01d918099d7c9aa5",
+      "review.html": "3430e7c2b88dd146caa17db1c4eec36fb7dd2ad653fb1dc3f98d12f19bc9c9b4"
+    },
+    "noise-spectral": {
+      "analysis.json": "c7c0a1c95c4ba8bc60f973f60c0009e874e4b362259447956fd571710192d1d1",
+      "audio.wav": "c9edff0a570a0e57fbbc5a576fe947930f0289d6f190a0bc5bfe99cdfd663ed3",
+      "manifest.mur": "28585830de94c639c2bcc07cfd906247820d0a1baf21758228a4a3054bc8eab9",
+      "plan.json": "04afacc024740843bf72d1ab9161ba80ae5bdfd92f589cde6e72ec679ccfe277",
+      "receipt.json": "019e7c07aafd4e2ea147d345652cf4062e17198219db058e6ab5361c20845fe8",
+      "review.html": "64f0bac093f936c870246b0575d7ad4ba196464cea1b8c3476d0d52f1a204f80"
+    }
+  },
+  "codec": [
+    "pcm16",
+    "pcm24",
+    "float32"
+  ],
+  "negativeControls": [
+    "observable outside-region change",
+    "tamper rejection",
+    "unlisted-file rejection"
+  ]
+}

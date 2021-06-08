@@ -1,5 +1,8 @@
 # Verification and measurements
 
+[Recorded fresh-clone and hosted results](evidence/README.md) preserve the raw
+reports and matching source manifests from macOS and Linux.
+
 ## Reproduce
 
 ```sh
@@ -44,7 +47,8 @@ navigation and publication rules but is outside the behavioral source digest.
 | Examples | Fresh synthetic demo and every shipped `.mur` document, then verified bundles |
 | Repository | Local documentation links, plain text punctuation rule, and offline asset boundaries |
 
-The Scheme suite currently contains 70 cases. Assertion counts include loops over
+The Scheme suite currently contains 72 cases and 34,840 assertions per run.
+Every case runs in both interpreted and compiled modes. Assertion counts include loops over
 samples, phases, and point sets. They are not a line-coverage percentage or a
 claim to enumerate every possible input.
 
@@ -139,7 +143,7 @@ source digest, not treated as proof of a stronger claim.
 Important generated files:
 
 - `source-manifest.json`: every behavioral source/test file and its SHA-256.
-- `scheme-tests.json`: case, assertion, and failure counts.
+- `scheme-tests.json`, `scheme-compiled-tests.json`: separate interpreted and compiled case, assertion, and failure counts.
 - `acceptance.json`: byte-level privacy artifacts for all six pairs.
 - `malformed.json`, `signals.json`, `native-abi.json`, `identity.json`: corpus, numeric, and canonical identity results.
 - `commands.json`, `review-tests.json`, `review-html.json`: product boundaries.
